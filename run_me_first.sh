@@ -2,18 +2,24 @@
 
 set -e
 
-GAMEDIR="/games"
-USERACCT=ubuntu
-INSTALLDIR="/home/ubuntu"
+source config.sh
 
 echo "Updating package list..."
 apt-get -y update
 
 echo "Installing required packages..."
-apt-get -y install lib32z1 lib32ncurses5 screen vim expect
+apt-get -y install lib32z1 lib32ncurses5 screen vim expect gcc make
 
 echo "Installing more required packages..."
 apt-get -y install lib32stdc++6 lib32gcc1
+
+
+echo "Installing no-ip dynamic DNS client..."
+cd "$INSTALLDIR"
+wget http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
+tar xzf noip-duc-linux.tar.gz
+cd noip*
+make
 
 echo "Creating $GAMEDIR directory..."
 mkdir -p "$GAMEDIR"
@@ -50,6 +56,14 @@ echo "login" > install.sh
 echo "force_install_dir $GAMEDIR/" >> install.sh
 echo "app_update 740 validate" >> install.sh
 echo "quit" >> install.sh
+
+echo "#!/bin/sh -e"
+echo "/usr/local/bin/noip2" > /etc/rc.local
+echo "/games/start.sh" >> /etc/rc.local
+echo "exit 0" >> /etc/rc.local
+
+chmod +x /etc/rc.local
+
 
 
 echo "NEXT STEPS: Run the following command as the $USERACCT user:"
