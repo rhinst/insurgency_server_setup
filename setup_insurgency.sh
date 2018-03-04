@@ -3,7 +3,6 @@
 set -e
 
 GAMEDIR="/games"
-EBS_VOLUME_SIZE=16
 USERACCT=ubuntu
 INSTALLDIR="/home/ubuntu"
 
@@ -18,18 +17,6 @@ apt-get -y install lib32stdc++6 lib32gcc1
 
 echo "Creating $GAMEDIR directory..."
 mkdir -p "$GAMEDIR"
-
-echo "Mounting EBS volume..."
-DISKDEV=$(lsblk|grep 20G|cut -f1 -d" ")
-if [ $DISKDEV ]; then
-	echo "Disk device is /dev/$DISKDEV"
-	echo "Formatting disk..."
-	/sbin/mkfs -t ext4 /dev/$DISKDEV
-	echo "Mounting disk at $GAMEDIR..."
-	mount /dev/xvdb /games
-else
-	echo "EBS Volume not found"
-fi
 
 echo "Updating permissions on $GAMEDIR..."
 chown $USERACCT /games
