@@ -25,7 +25,7 @@ echo "Downloading Steam for Linux archive into $INSTALLDIR..>"
 cd "$INSTALLDIR"
 /usr/bin/wget http://media.steampowered.com/installer/steamcmd_linux.tar.gz
 echo "Extracting Steam installation files into $GAMEDIR..."
-/bin/tar xvfz /tmp/steamcmd_linux.tar.gz
+/bin/tar xvfz "$GAMEDIR/steamcmd_linux.tar.gz"
 echo "Updating Steam installer permissions..."
 chown $USERACCT steamcmd.sh
 chmod +x steamcmd.sh
